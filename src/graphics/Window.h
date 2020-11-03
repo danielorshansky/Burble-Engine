@@ -9,14 +9,14 @@
 
 class Window {
 public:
-	Window(int width, int height, const char* title, bool vsync, bool depth) : width(width), height(height) {
+	Window(int width, int height, const char *title, bool vsync, bool depth) : width(width), height(height) {
 		if (!glfwInit()) {
 			std::cerr << "Failed to Initialize GLFW" << std::endl;
 			exit(1);
 		}
 
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_VISIBLE, 0);
 		glfwWindowHint(GLFW_RESIZABLE, 0);
@@ -28,7 +28,7 @@ public:
 			exit(1);
 		}
 
-		const GLFWvidmode* video_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		const GLFWvidmode *video_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		glfwSetWindowPos(window, (video_mode->width - width) / 2, (video_mode->height - height) / 2);
 
 		glfwMakeContextCurrent(window);
@@ -71,14 +71,14 @@ public:
 		return glfwGetTime();
 	}
 
-	void SetIcon(const char* path) {
-		Image image = Texture::LoadImageData(path);
+	void SetIcon(const char *path) {
+		TextureData data = Texture::LoadImageData(path);
 		GLFWimage images[1];
-		images[0].pixels = image.pixels;
-		images[0].width = image.width;
-		images[0].height = image.height;
+		images[0].pixels = data.pixels;
+		images[0].width = data.width;
+		images[0].height = data.height;
 		glfwSetWindowIcon(window, 1, images);
-		Texture::FreeImage(image.pixels);
+		Texture::FreeImage(data.pixels);
 	}
 
 	void Clean() {
@@ -87,7 +87,7 @@ public:
 
 private:
 	int width, height;
-	GLFWwindow* window;
+	GLFWwindow *window;
 
 	GLbitfield fields = GL_COLOR_BUFFER_BIT;
 };

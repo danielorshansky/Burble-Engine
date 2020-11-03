@@ -3,20 +3,20 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-struct Image {
-	unsigned char* pixels;
+struct TextureData {
+	unsigned char *pixels;
 	int width, height;
 };
 
 class Texture {
 public:
-	static Image LoadImageData(const char* path) {
-		Image image;
-		image.pixels = stbi_load(path, &image.width, &image.height, 0, 4);
-		return image;
+	static TextureData LoadImageData(const char *path) {
+		TextureData data;
+		data.pixels = stbi_load(path, &data.width, &data.height, 0, 4);
+		return data;
 	}
 
-	static void FreeImage(unsigned char* pixels) {
+	static void FreeImage(unsigned char *pixels) {
 		stbi_image_free(pixels);
 	}
 };
