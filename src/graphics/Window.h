@@ -54,7 +54,7 @@ public:
 		glClear(fields);
 	}
 
-	void SetColor(float r, float g, float b, float a = 1) {
+	void static SetColor(float r, float g, float b, float a = 1) {
 		glClearColor(r, g, b, a);
 	}
 
@@ -67,7 +67,7 @@ public:
 		return glfwWindowShouldClose(window);
 	}
 
-	double GetTime() {
+	double static GetTime() {
 		return glfwGetTime();
 	}
 
@@ -82,6 +82,10 @@ public:
 	}
 
 	void Clean() {
+		glfwDestroyWindow(window);
+	}
+
+	static void Terminate() {
 		glfwTerminate();
 	}
 

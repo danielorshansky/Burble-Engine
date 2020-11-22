@@ -28,7 +28,7 @@ public:
 		catch (std::ifstream::failure &exception) {
 			std::cerr << "Failed to Load Shader File" << std::endl;
 		}
-		const char* vertex_src = vertex_src_str.c_str(), *fragment_src = fragment_src_str.c_str();
+		const char *vertex_src = vertex_src_str.c_str(), *fragment_src = fragment_src_str.c_str();
 
 		unsigned int vertex, fragment;
 		vertex = glCreateShader(GL_VERTEX_SHADER);

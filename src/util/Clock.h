@@ -4,12 +4,12 @@
 
 class Clock {
 public:
-	void Update(Window window) {
-		last_time = window.GetTime();
+	void Update() {
+		last_time = Window::GetTime();
 	}
 
-	double GetDelta(Window window) {
-		return window.GetTime() - last_time;
+	double GetDelta() {
+		return Window::GetTime() - last_time;
 	}
 
 private:
