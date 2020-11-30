@@ -72,7 +72,7 @@ public:
 	}
 
 	void SetIcon(const char *path) {
-		TextureData data = Texture::LoadImageData(path);
+		TextureData data = Texture::LoadImageData(path, 4);
 		GLFWimage images[1];
 		images[0].pixels = data.pixels;
 		images[0].width = data.width;
@@ -92,6 +92,5 @@ public:
 private:
 	int width, height;
 	GLFWwindow *window;
-
 	GLbitfield fields = GL_COLOR_BUFFER_BIT;
 };
