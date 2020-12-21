@@ -7,6 +7,7 @@
 
 #include "Texture.h"
 #include "Shader.h"
+#include "../engine/Transformation.h"
 
 struct Material {
 	std::vector<glm::vec2> tex_coords;
@@ -16,7 +17,7 @@ struct Material {
 
 class Mesh {
 public:
-	Mesh(std::vector<glm::vec3> positions, Material material, std::vector<unsigned int> indices) : material(material), textured(!material.textures.empty()), vertex_count(indices.size()) {
+	Mesh(const std::vector<glm::vec3> &positions, const Material &material, const std::vector<unsigned int> &indices) : material(material), textured(!material.textures.empty()), vertex_count(indices.size()) {
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(4, VBOs);
 		glBindVertexArray(VAO);
@@ -45,8 +46,9 @@ public:
 		glBindVertexArray(0);
 	}
 
-	void Render(Shader &shader) {
+	void Render(Shader &shader, glm::mat4 &transformation) {
 		shader.Bind();
+		shader.UniformMat4("transformation", transformation);
 		shader.UniformInt("textured", int(textured));
 		if (textured) {
 			for (unsigned int i = 0; i < material.textures.size(); i++) {
@@ -68,7 +70,7 @@ public:
 	void Clean() {
 		glDisableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		for (unsigned int VBO : VBOs)
+		for (unsigned int &VBO : VBOs)
 			glDeleteBuffers(1, &VBO);
 		glBindVertexArray(0);
 		glDeleteVertexArrays(1, &VAO);

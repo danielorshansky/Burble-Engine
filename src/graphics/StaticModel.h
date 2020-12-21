@@ -27,9 +27,9 @@ public:
 		Load(scene, scene->mRootNode);
 	}
 
-	void Render(Shader &shader) {
+	void Render(Shader &shader, glm::mat4 &transformation) {
 		for (Mesh &mesh : meshes)
-			mesh.Render(shader);
+			mesh.Render(shader, transformation);
 	}
 
 	void Clean() {
