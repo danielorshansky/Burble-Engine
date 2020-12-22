@@ -13,7 +13,9 @@ public:
 		return transformation;
 	}
 
-	void Rotate(float angle, float x, float y, float z) {
+	void Rotate(float angle, float x, float y, float z, bool radians) {
+		if (!radians)
+			angle = glm::radians(angle);
 		transformation = glm::rotate(transformation, angle, glm::vec3(x, y, z));
 	}
 
