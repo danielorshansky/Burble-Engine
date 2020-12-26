@@ -27,9 +27,9 @@ public:
 		Load(scene, scene->mRootNode);
 	}
 
-	void Render(Shader &shader, glm::mat4 &transformation) {
+	void Render(Shader &shader, glm::mat4 &model, Camera &camera, Window &window) {
 		for (Mesh &mesh : meshes)
-			mesh.Render(shader, transformation);
+			mesh.Render(shader, model, camera, window);
 	}
 
 	void Clean() {
@@ -78,7 +78,7 @@ private:
 		for (unsigned int i = 0; i < raw_material->GetTextureCount(aiTextureType_DIFFUSE); i++) {
 			aiString path;
 			if (raw_material->GetTexture(aiTextureType_DIFFUSE, i, &path) == AI_SUCCESS) {
-				std::string full_path = directory + "/" + path.data;
+				std::string full_path = directory + '/' + path.data;
 				std::vector<std::string>::iterator iterator = std::find(paths.begin(), paths.end(), full_path);
 				if (iterator != paths.end())
 					textures.push_back(textures[iterator - paths.begin()]);

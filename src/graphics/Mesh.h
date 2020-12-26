@@ -8,6 +8,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "../engine/Transformation.h"
+#include "../engine/Camera.h"
 
 struct Material {
 	std::vector<glm::vec2> tex_coords;
@@ -46,9 +47,13 @@ public:
 		glBindVertexArray(0);
 	}
 
-	void Render(Shader &shader, glm::mat4 &transformation) {
+	void Render(Shader &shader, glm::mat4 &model, Camera &camera, Window &window) {
 		shader.Bind();
-		shader.UniformMat4("transformation", transformation);
+		shader.UniformMat4("model", model);
+		glm::mat4 matrix = camera.GetViewMatrix();
+		shader.UniformMat4("view", matrix);
+		matrix = camera.GetProjectionMatrix(window.AspectRatio());
+		shader.UniformMat4("projection", matrix);
 		shader.UniformInt("textured", int(textured));
 		if (textured) {
 			for (unsigned int i = 0; i < material.textures.size(); i++) {

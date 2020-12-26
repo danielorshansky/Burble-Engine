@@ -5,28 +5,28 @@
 
 class Transformation {
 public:
-	Transformation(glm::mat4 transformation = glm::mat4(1.f)) : transformation(transformation) {
+	Transformation(glm::mat4 model = glm::mat4(1.f)) : model(model) {
 
 	}
 
 	glm::mat4 &GetTransformation() {
-		return transformation;
+		return model;
 	}
 
-	void Rotate(float angle, float x, float y, float z, bool radians) {
+	void Rotate(float angle, float x, float y, float z, bool radians = false) {
 		if (!radians)
 			angle = glm::radians(angle);
-		transformation = glm::rotate(transformation, angle, glm::vec3(x, y, z));
+		model = glm::rotate(model, angle, glm::vec3(x, y, z));
 	}
 
 	void Scale(float x, float y, float z) {
-		transformation = glm::scale(transformation, glm::vec3(x, y, z));
+		model = glm::scale(model, glm::vec3(x, y, z));
 	}
 
 	void Translate(float x, float y, float z) {
-		transformation = glm::translate(transformation, glm::vec3(x, y, z));
+		model = glm::translate(model, glm::vec3(x, y, z));
 	}
 
 private:
-	glm::mat4 transformation;
+	glm::mat4 model;
 };

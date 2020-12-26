@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Transformation.h"
+#include "Camera.h"
 #include "../graphics/StaticModel.h"
 #include "../graphics/Shader.h"
 #include "../graphics/StaticModel.h"
+#include "../graphics/Window.h"
 
 class Entity {
 public:
@@ -15,12 +17,12 @@ public:
 		this->transformation = transformation;
 	}
 
-	Transformation& GetTransformation() {
+	Transformation &GetTransformation() {
 		return transformation;
 	}
 
-	void Render() {
-		model.Render(shader, transformation.GetTransformation());
+	void Render(Camera &camera, Window &window) {
+		model.Render(shader, transformation.GetTransformation(), camera, window);
 	}
 
 	void Clean() {
