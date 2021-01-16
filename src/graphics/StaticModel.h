@@ -11,6 +11,7 @@
 #include <glm/glm.hpp>
 
 #include "Mesh.h"
+#include "Texture.h"
 
 class StaticModel {
 public:

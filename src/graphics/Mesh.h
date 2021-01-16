@@ -7,7 +7,6 @@
 
 #include "Texture.h"
 #include "Shader.h"
-#include "../engine/Transformation.h"
 #include "../engine/Camera.h"
 
 struct Material {
