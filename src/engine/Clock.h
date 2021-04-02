@@ -4,11 +4,11 @@
 
 class Clock {
 public:
-	void Update() {
+	void Update() { // update clock
 		last_time = Window::GetTime();
 	}
 
-	double GetDelta() {
+	double GetDelta() { // returns delta time
 		return Window::GetTime() - last_time;
 	}
 
