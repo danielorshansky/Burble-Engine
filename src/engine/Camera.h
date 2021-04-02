@@ -18,14 +18,14 @@ public:
 	}
 
 	glm::mat4 GetViewMatrix() {
-		return glm::lookAt(position, position + front, up);
+		return glm::lookAt(position, position + front, up); // generate view matrix
 	}
 
 	glm::mat4 GetProjectionMatrix(float aspect_ratio) {
-		return glm::perspective(glm::radians(zoom), aspect_ratio, near, far);
+		return glm::perspective(glm::radians(zoom), aspect_ratio, near, far); // give projection matrix given aspect ratio, near, and far
 	}
 
-	void Translate(Movement direction, float delta_time = 1.f) {
+	void Translate(Movement direction, float delta_time = 1.f) { // move camera
 		float velocity = speed * delta_time;
 		if (direction == Movement::Forward)
 			position += front * velocity;
@@ -41,7 +41,7 @@ public:
 			position -= up * velocity;
 	}
 
-	void Rotate(float x_offset, float y_offset, bool constrain_pitch = false) {
+	void Rotate(float x_offset, float y_offset, bool constrain_pitch = false) { // rotate camera
 		x_offset *= sensitivity;
 		y_offset *= sensitivity;
 		yaw += x_offset;
@@ -57,7 +57,7 @@ public:
 		return zoom;
 	}
 
-	void Zoom(float zoom_offset) {
+	void Zoom(float zoom_offset) { // zoom camera
 		zoom -= zoom_offset;
 		if (zoom < zoom_min)
 			zoom = zoom_min;
@@ -67,9 +67,9 @@ public:
 
 private:
 	glm::vec3 position, front, up, world_up, right;
-	float yaw, pitch, speed, sensitivity, zoom, zoom_max, zoom_min, near, far, pitch_min, pitch_max;
+	float yaw, pitch, speed, sensitivity, zoom, zoom_max, zoom_min, near, far, pitch_min, pitch_max; // camera values
 
-	void Update() {
+	void Update() { // update camera vectors
 		glm::vec3 updated_front;
 		updated_front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
 		updated_front.y = sin(glm::radians(pitch));
