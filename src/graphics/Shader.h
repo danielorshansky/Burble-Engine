@@ -11,7 +11,8 @@
 
 class Shader {
 public:
-	Shader(const char *vertex_path, const char *fragment_path) {
+	Shader(const char *vertex_path, const char *fragment_path) { // load shader
+		// get shader source
 		std::string vertex_src_str, fragment_src_str;
 		std::ifstream vertex_file, fragment_file;
 		vertex_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -31,7 +32,8 @@ public:
 			std::cerr << "Failed to Load Shader File" << std::endl;
 		}
 		const char *vertex_src = vertex_src_str.c_str(), *fragment_src = fragment_src_str.c_str();
-
+		
+		// create shader and check for errors
 		unsigned int vertex, fragment;
 		vertex = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertex, 1, &vertex_src, 0);
@@ -42,43 +44,46 @@ public:
 		glCompileShader(fragment);
 		CompileErrors(fragment, false);
 
+		// create shader program
 		id = glCreateProgram();
 		glAttachShader(id, vertex);
 		glAttachShader(id, fragment);
 		glLinkProgram(id);
 		glValidateProgram(id);
 		CompileErrors(id, true);
+		
+		// clean unnecessary shaders once attached
 		glDetachShader(id, vertex);
 		glDetachShader(id, fragment);
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
 	}
 
-	void Bind() {
+	void Bind() { // bind shader
 		glUseProgram(id);
 	}
 
-	static void Unbind() {
+	static void Unbind() { // unbind shader
 		glUseProgram(0);
 	}
 
-	void Clean() {
+	void Clean() { // clean shader
 		Unbind();
 		glDeleteProgram(id);
 	}
 
-	void UniformInt(const char *name, int value) {
+	void UniformInt(const char *name, int value) { // set uniform int
 		glUniform1i(glGetUniformLocation(id, name), value);
 	}
 
-	void UniformMat4(const char *name, glm::mat4 &matrix) {
+	void UniformMat4(const char *name, glm::mat4 &matrix) { // set uniform mat4
 		glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(matrix));
 	}
 
 private:
 	unsigned int id;
 
-	void CompileErrors(unsigned int shader, bool program) {
+	void CompileErrors(unsigned int shader, bool program) { // check for errors
 		int success;
 		char info_log[1024];
 		if (!program) {
