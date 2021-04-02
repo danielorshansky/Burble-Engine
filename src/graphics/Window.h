@@ -7,6 +7,7 @@
 
 #include "Texture.h"
 
+// set glfw input values
 #define MOUSE_BUTTON_1 0
 #define MOUSE_BUTTON_2 1
 #define MOUSE_BUTTON_3 2
@@ -137,11 +138,12 @@
 class Window {
 public:
 	Window(int width, int height, const char *title, bool vsync, bool depth, bool culling) : width(width), height(height) {
-		if (!glfwInit()) {
+		if (!glfwInit()) { // initialize glfw and check for errors
 			std::cerr << "Failed to Initialize GLFW" << std::endl;
 			exit(1);
 		}
 
+		// set window hints
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -149,64 +151,64 @@ public:
 		glfwWindowHint(GLFW_RESIZABLE, 0);
 
 		window = glfwCreateWindow(width, height, title, 0, 0);
-		if (window == 0) {
+		if (window == 0) { // check for errors
 			std::cerr << "Failed to Create Window" << std::endl;
-			Clean();
+			Clean(); // clean glfw
 			exit(1);
 		}
 
 		const GLFWvidmode *video_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		glfwSetWindowPos(window, (video_mode->width - width) / 2, (video_mode->height - height) / 2);
+		glfwSetWindowPos(window, (video_mode->width - width) / 2, (video_mode->height - height) / 2); // center window
 
 		glfwMakeContextCurrent(window);
 
-		if (vsync)
+		if (vsync) // enable vsync
 			glfwSwapInterval(1);
 
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) { // load glad and check for errors
 			std::cerr << "Failed to Initialize glad" << std::endl;
 			Clean();
 			exit(1);
 		}
 
-		if (depth) {
+		if (depth) { // enable depth
 			glEnable(GL_DEPTH_TEST);
 			fields = fields | GL_DEPTH_BUFFER_BIT;
 		}
 
-		glEnable(GL_BLEND);
+		glEnable(GL_BLEND); // enable blending
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		if (culling) {
+		if (culling) { // enable back face culling
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_BACK);
 		}
 
-		glfwShowWindow(window);
+		glfwShowWindow(window); // show window
 	}
 
-	void Clear() {
+	void Clear() { // clear window
 		glClear(fields);
 	}
 
-	void static SetColor(float r, float g, float b, float a = 1) {
+	void static SetColor(float r, float g, float b, float a = 1) { // set window clear color
 		glClearColor(r, g, b, a);
 	}
 
-	void Update() {
+	void Update() { // update window
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-	bool ShouldClose() {
+	bool ShouldClose() { // check if close attempted
 		return glfwWindowShouldClose(window);
 	}
 
-	double static GetTime() {
+	double static GetTime() { // return glfw time
 		return glfwGetTime();
 	}
 
-	void SetIcon(const char *path) {
+	void SetIcon(const char *path) { // set window icon
 		TextureData data = Texture::LoadImageData(path, 4);
 		GLFWimage images[1];
 		images[0].pixels = data.pixels;
@@ -216,23 +218,23 @@ public:
 		Texture::FreeImage(data.pixels);
 	}
 
-	bool KeyDown(int id) {
+	bool KeyDown(int id) { // check if key is down
 		return glfwGetKey(window, id);
 	}
 
-	bool MouseDown(int mouse_button) {
+	bool MouseDown(int mouse_button) { // check if mouse button pressed
 		return glfwGetMouseButton(window, mouse_button);
 	}
 
-	void Clean() {
+	void Clean() { // clean window
 		glfwDestroyWindow(window);
 	}
 
-	static void Terminate() {
+	static void Terminate() { // terminate glfw
 		glfwTerminate();
 	}
 
-	float AspectRatio() {
+	float AspectRatio() { // return aspect ratio
 		return width / height;
 	}
 
