@@ -9,7 +9,7 @@
 
 class Entity {
 public:
-	Entity(const char *path, bool gamma = false) : model(path, gamma), shader("src/shaders/model.vs", "src/shaders/model.fs") {
+	Entity(const char *path, bool gamma = false) : model(path, gamma), shader("src/shaders/model.vs", "src/shaders/model.fs") { // initialize shader and model
 
 	}
 
@@ -17,15 +17,15 @@ public:
 		this->transformation = transformation;
 	}
 
-	Transformation &GetTransformation() {
+	Transformation &GetTransformation() { // returns transformation
 		return transformation;
 	}
 
-	void Render(Camera &camera, Window &window) {
+	void Render(Camera &camera, Window &window) { // render model
 		model.Render(shader, transformation.GetTransformation(), camera, window);
 	}
 
-	void Clean() {
+	void Clean() { // clean model and shader
 		model.Clean();
 		shader.Clean();
 	}
